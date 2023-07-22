@@ -1,0 +1,24 @@
+@use '../../scss/variable' as variables;
+
+
+.container-language {
+    display: flex;
+    gap: 1rem;
+    padding: 0;
+
+    &-flags {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        cursor: pointer;
+
+        img {
+            width: 60px;
+            
+        }
+    }
+
+    .active {
+        border-bottom: 2px solid variables.$active-color;
+    }
+}

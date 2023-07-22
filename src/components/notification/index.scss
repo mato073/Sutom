@@ -1,0 +1,39 @@
+/* @use '../../scss/global/variables' as variables; */
+
+.notification {
+    margin-top: 1rem;
+    position: fixed;
+    z-index: 9999;
+    right: 0;
+    width: 400px;
+    border-radius: 5px 0 0 5px;
+    display: flex;
+    align-items: center;
+    transform: translateX(+300px);
+    animation: slide-in 4s ease-in-out forwards;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(100%);
+    }
+
+    8% {
+        transform: translateX(0%);
+    }
+
+    92% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+/* 
+@media (max-width: variables.$window-size-mobile-xl) {
+    .notification {
+        max-width: 90%;
+        border-radius: 0;
+    }
+} */

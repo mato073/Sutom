@@ -1,0 +1,30 @@
+@use '../../scss/variable' as *;
+
+.attempts {
+    display: flex;
+}
+
+.green {
+    background-color: $correct-letter-color;
+}
+
+.yellow {
+    background-color: $bad-spot-letter-color;
+}
+
+.red {
+    background-color: $wrong-letter-color;
+}
+
+.attempts__letter {
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+        font-size: 2.5rem;
+    }
+}

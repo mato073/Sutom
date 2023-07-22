@@ -1,0 +1,1 @@
+export type playerWin = "" | "win" | "lose"
