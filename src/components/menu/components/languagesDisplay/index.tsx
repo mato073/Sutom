@@ -5,18 +5,19 @@ import { languageType } from '../../../../types/language';
 interface Props2 {
     index: number;
     item: languageType;
-    setLanguage: (index: number) => void;
-    language: number;
+    setLanguage: (lang: "en" | "es" | "it" | "de") => void;
+    language: "en" | "es" | "it" | "de";
 }
 
 const LanguagesDisplay = React.memo<Props2>(({ index, item, setLanguage, language }) => {
 
     const setLanguageCallBack = React.useCallback(() => {
-        setLanguage(index);
+        const key = item.key;
+        setLanguage(key);
     }, [index, setLanguage])
 
 
-    return (<div onClick={setLanguageCallBack} className={`container-language-flags ${Number(index) === language ? "active" : ""}`} key={index}>
+    return (<div onClick={setLanguageCallBack} className={`form__language__container__flags ${item.key === language ? "active" : ""}`} key={index}>
         <img src={item.flag} />
     </div>)
 })

@@ -1,24 +1,179 @@
 @use '../../scss/variable' as variables;
 
 
-.container-language {
+.menu {
     display: flex;
-    gap: 1rem;
-    padding: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    &-flags {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        cursor: pointer;
+    &__title {
+        margin: 0;
+        margin: 1rem 0;
+        letter-spacing: 0.2rem;
+        font-size: 5rem;
+        font-weight: 700;
+        text-transform: uppercase;
 
-        img {
-            width: 60px;
-            
+        color: variables.$accent-color;
+        position: relative;
+        text-shadow:
+            0 1px 0 #48FAC7,
+            0 -1px 0 #6F1D2F,
+            1px 0 0 #48FAC7,
+            -1px 0 0 #6F1D2F,
+            2px 1px 0 #48FAC7,
+            -2px -1px 0 #6F1D2F,
+            3px 2px 0 #48FAC7,
+            -3px -2px 0 #6F1D2F;
+    }
+
+    &__rules {
+
+        font-size: 1.1rem;
+        color: #F0EAD6;
+
+        h2 {
+            margin: 0;
+        }
+
+        .green {
+            background-color: variables.$correct-letter-color;
+            padding: 0.5rem;
+            margin-left: 1rem;
+            color: black;
+        }
+
+        .yellow {
+            background-color: variables.$bad-spot-letter-color;
+            padding: 0.5rem;
+            margin-left: 1rem;
+            color: black;
+        }
+
+        .red {
+            background-color: variables.$wrong-letter-color;
+            padding: 0.5rem;
+            margin-left: 1rem;
+            color: black;
+        }
+    }
+}
+
+.form {
+
+    &__difficulty {
+        font-size: 1.1rem;
+        color: #F0EAD6;
+
+        &__radios {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+
+            input[type="radio"] {
+                appearance: none;
+                width: 20px;
+                height: 20px;
+                border: 2px solid variables.$accent-color;
+                border-radius: 50%;
+                margin-right: 8px;
+                vertical-align: middle;
+                position: relative;
+                top: -2px;
+            }
+
+            /* Style for the radio input when it's checked */
+            input[type="radio"]:checked {
+                background-color: variables.$accent-color;
+            }
         }
     }
 
-    .active {
-        border-bottom: 2px solid variables.$active-color;
+    &__attempt {
+        font-size: 1.1rem;
+        color: #F0EAD6;
+
+        &__selection {
+            display: flex;
+            gap: 1rem;
+
+            .active {
+                background-color: variables.$accent-color;
+                color: black;
+            }
+
+            &__item {
+                border: 2px solid variables.$accent-color;
+                color: variables.$accent-color;
+                padding: 0.5rem;
+                cursor: pointer;
+                border-radius: 10%;
+            }
+
+
+        }
+    }
+
+    &__language {
+        font-size: 1.1rem;
+        color: #F0EAD6;
+        margin-bottom: 2rem;
+
+        &__flags {
+            display: flex;
+            gap: 1rem;
+            padding: 0;
+            cursor: pointer;
+
+            img {
+                width: 60px;
+
+            }
+        }
+
+        &__container {
+            display: flex;
+            gap: 1rem;
+            padding: 0;
+
+            &__flags {
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+                cursor: pointer;
+
+                img {
+                    width: 60px;
+
+                }
+            }
+
+            .active {
+                border-bottom: 4px solid variables.$active-color;
+            }
+        }
+    }
+
+    &__action {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+
+        &__button {
+            font-size: 1.7rem;
+            background: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid variables.$important-color;
+            border-radius: 10px;
+            color: variables.$important-color;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+                background-color: variables.$important-color;
+                color: black;
+            }
+        }
     }
 }

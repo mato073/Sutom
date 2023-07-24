@@ -11,6 +11,7 @@ const Notification = () => {
 
     React.useEffect(() => {
         window.addEventListener('notification', ((event: CustomEvent) => {
+            console.log(event.detail);
             setNotification(event.detail);
         }) as EventListener);
 
@@ -28,8 +29,8 @@ const Notification = () => {
     return (
         <div>
             {notification &&
-                <div onAnimationEnd={onAnimationEndAnimation} className='notification'>
-                    <div className={`notification__content ${notification.type}`}>
+                <div onAnimationEnd={onAnimationEndAnimation} className={`notification ${notification.type}`}>
+                    <div className='notification__items'>
                         {notification.message}
                     </div>
                 </div>

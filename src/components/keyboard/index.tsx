@@ -14,23 +14,24 @@ const keyborder = {
 interface Props {
     playerDel: () => void;
     playerPlay: (letter: string) => void;
+    playerSubmit: () => void;
 }
 
 
 
-const Keyboard = React.memo(({ playerDel, playerPlay }: Props) => {
+const Keyboard = React.memo(({ playerDel, playerPlay, playerSubmit }: Props) => {
 
     const playerDelCallBack = React.useCallback(() => {
         playerDel();
     }, [playerDel])
 
-    /*     const playerValidateCallBack = React.useCallback(() => {
-            playerValidate();
-        }, [playerValidate]) */
+    const playerSubmitCallBack = React.useCallback(() => {
+        playerSubmit();
+    }, [playerSubmit])
 
 
     return (
-        <div>
+        <div className="keyboard">
             <div className="row1">
                 {keyborder.row1.map((item, index) => {
                     return <KeyButton playerPlay={playerPlay} item={item} index={index} key={index} />
@@ -39,7 +40,7 @@ const Keyboard = React.memo(({ playerDel, playerPlay }: Props) => {
                 <div>
                     <button onClick={playerDelCallBack}>
                         <span>
-                            <Arrow direction="left" size={15} />
+                            <Arrow direction="left" size={25} />
                         </span>
                         Backspace
                     </button>
@@ -50,7 +51,7 @@ const Keyboard = React.memo(({ playerDel, playerPlay }: Props) => {
                     return <KeyButton playerPlay={playerPlay} item={item} index={index} key={index} />
                 }
                 )}
-                <div>
+                <div onClick={playerSubmitCallBack} className="row2__validate">
                     <button>Validate</button>
                 </div>
             </div>

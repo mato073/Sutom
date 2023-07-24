@@ -1,0 +1,12 @@
+@use '../../scss/variable' as variables;
+
+.game {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: variables.$background-color;
+}

@@ -13,14 +13,16 @@ interface Props {
 }
 
 type Colors = {
-    [key: number]: string
+    [key: string]: string
 }
 
+
 const colors: Colors = {
-    0: '',
-    1: 'green',
-    2: 'yellow',
-    3: 'red'
+    "unset": '',
+    "correct": 'green',
+    "wrong place": 'yellow',
+    "incorrect": 'red',
+
 }
 
 

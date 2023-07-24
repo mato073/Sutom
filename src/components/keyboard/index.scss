@@ -1,25 +1,42 @@
+@use "../../scss/variable" as *;
+
+.keyboard {
+    margin-top: 2rem;
+}
+
+
 .row1,
 .row2,
 .row3 {
     display: flex;
     gap: 0.5rem;
     padding: 0.5rem;
+
+    button {
+        background-color: lightgray;
+        color: black;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 2rem;
+        text-align: center;
+        cursor: pointer;
+        box-shadow: 4px 4px grey;
+    }
+
+    button:active {
+        background-color: $accent-color;
+        transform: translateY(3px);
+    }
 }
 
-
-button {
-    background-color: lightgray;
-    color: black;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 4px 4px grey;
-}
-
-button:active {
-    background-color: #FDD835;
-    transform: translateY(3px);
+.row2 {
+    &__validate {
+        button {
+            background-color: $important-color;
+            &:active {
+                background-color: $correct-letter-color;
+            }
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
 .attempts {
     display: flex;
+    background-color: #F0EAD6;
 }
 
 .green {
@@ -17,9 +18,9 @@
 }
 
 .attempts__letter {
-    width: 4rem;
-    height: 4rem;
-    border: 1px solid black;
+    width: 5rem;
+    height: 5rem;
+    border: 1.5px solid black;
     display: flex;
     justify-content: center;
     align-items: center;

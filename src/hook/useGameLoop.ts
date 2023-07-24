@@ -6,6 +6,14 @@ import { letter } from '../types/letter'
 import { error } from '../types/error'
 import { playerWin } from '../types/playerWin'
 
+
+type StartGame = {
+    difficulty: number,
+    language: "en" | "es" | "it" | "de",
+    attempt: number
+}
+
+
 const useGameLoop = () => {
 
     const [gameStarted, setGameStarted] = React.useState(false);
@@ -15,6 +23,12 @@ const useGameLoop = () => {
     const [board, setBoard] = React.useState<board>([]);
     const [playerWin, setPlayerWin] = React.useState<playerWin>("");
     const [error, setError] = React.useState<error>("");
+    const [gameSettings, setGameSettings] = React.useState<StartGame>({
+        difficulty: 5,
+        language: "en",
+        attempt: 5,
+    });
+
 
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Backspace') {
@@ -65,7 +79,6 @@ const useGameLoop = () => {
             setError(() => "not enouth letters");
             return;
         }
-
         if (word === currentWord) {
             setPlayerWin(() => "win");
         }
@@ -75,14 +88,14 @@ const useGameLoop = () => {
                 const existedLetterIndex = splittedWord.findIndex((item) => item === letter.letter);
                 if (existedLetterIndex !== -1 && index === existedLetterIndex) {
                     splittedWord[existedLetterIndex] = '';
-                    letter.isCorrect = 1;
+                    letter.isCorrect = "correct";
                 }
                 else if (existedLetterIndex !== -1 && index !== existedLetterIndex) {
                     splittedWord[existedLetterIndex] = '';
-                    letter.isCorrect = 2;
+                    letter.isCorrect = "wrong place";
                 }
                 else {
-                    letter.isCorrect = 3;
+                    letter.isCorrect = "incorrect";
                 }
                 return letter;
             })
@@ -97,21 +110,41 @@ const useGameLoop = () => {
 
 
 
-    const startGame = async (difficulty: number, language: string, attempt: number) => {
+    const startGame = async (
+        difficulty: number,
+        language: "en" | "es" | "it" | "de",
+        attempt: number) => {
+
         const url = `https://random-word-api.herokuapp.com/word`;
         const params: { "length": number, "lang"?: string } = { "length": difficulty };
         if (language !== "en") params['lang'] = language;
         const { data } = await axios.get(url, {
             params: params
-        })
-        setCurrentWord(() => "batto".toUpperCase()/* data[0] */);
-        const wordLength = /* data[0] */"batto".length;
+        });
+        console.log(data);
+        setCurrentWord(() => data[0].toUpperCase());
+        const wordLength = data[0].length;
         const newBoard: board = Array.from({ length: attempt }, () =>
-            Array.from({ length: wordLength }, () => ({ letter: '', isCorrect: 0 }))
+            Array.from({ length: wordLength }, () => ({ letter: '', isCorrect: "unset" }))
         );
         setMaxAttempt(() => attempt);
         setBoard(() => newBoard);
         setGameStarted(() => true);
+        setGameSettings(() => ({ difficulty, language, attempt }));
+    }
+
+    const restartGame = () => {
+        setCurrentAttempt(() => 1);
+        setBoard(() => []);
+        setPlayerWin(() => "");
+        startGame(gameSettings.difficulty, gameSettings.language, gameSettings.attempt);
+    }
+
+    const stopGame = () => {
+        setCurrentAttempt(() => 1);
+        setBoard(() => []);
+        setPlayerWin(() => "");
+        setGameStarted(() => false);
     }
 
 
@@ -143,7 +176,10 @@ const useGameLoop = () => {
         setCurrentAttempt,
         playerSubmit,
         playerWin,
-        error
+        error,
+        wordLength: currentWord.length,
+        restartGame,
+        stopGame
     }
 }
 

@@ -7,13 +7,39 @@ import Menu from '../menu';
 import Notification from '../notification';
 import Modal from '../modal';
 import EndGameModal from '../modal/components/endGameModal';
+import Arrow from "../assets/arrow";
 
 import { notificationAction } from '../../utils/notificationAction';
+
+import './index.scss'
 
 
 const Game = () => {
     const [modal, setModal] = React.useState(false);
-    const { gameStarted, startGame, board, playerPlay, playerDel, playerSubmit, playerWin, error } = useGameLoop();
+    const {
+        gameStarted,
+        startGame,
+        board,
+        playerPlay,
+        playerDel,
+        playerSubmit,
+        playerWin,
+        error,
+        wordLength,
+        restartGame,
+        stopGame
+    } = useGameLoop();
+
+
+    const restartGameCallback = React.useCallback(() => {
+        restartGame();
+        setModal(false);
+    }, [restartGame])
+
+    const stopGameCallback = React.useCallback(() => {
+        stopGame();
+        setModal(false);
+    }, [stopGame])
 
 
     React.useEffect(() => {
@@ -25,27 +51,25 @@ const Game = () => {
 
     React.useEffect(() => {
         if (error === "not enouth letters") {
-            notificationAction('You need to play at least 3 letters', 'warning');
+            notificationAction(`You need to play ${wordLength} letters`, 'warning');
         }
     }, [error])
 
-
     return (
-        <div>
-            <Modal isOpen={modal} onClose={() => { }}>
-                <EndGameModal win={playerWin} /* newGame={() => { }} */ />
+        <div className='game'>
+            <Modal isOpen={modal}>
+                <EndGameModal stopGame={stopGameCallback} restartGame={restartGameCallback} win={playerWin} />
             </Modal>
             <Notification />
             {
                 gameStarted ?
                     <>
                         <Board board={board} />
-                        <Keyboard playerPlay={(letter: string) => playerPlay(letter)} playerDel={playerDel} />
-                        <button onClick={() => playerSubmit()}>Submit</button>
+                        <Keyboard playerPlay={(letter: string) => playerPlay(letter)} playerDel={playerDel} playerSubmit={playerSubmit} />
                     </>
 
                     :
-                    <Menu startGame={(difficulty: number, language: string, attempts: number) => startGame(difficulty, language, attempts)} />
+                    <Menu startGame={startGame} />
             }
         </div>
     )

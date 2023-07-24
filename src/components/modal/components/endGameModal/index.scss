@@ -1,0 +1,50 @@
+@use '../../../../scss/variable' as variable;
+
+
+
+.endGameModal {
+    padding: 1rem;
+    background-color: variable.$background-color;
+
+    &__content {
+        .win {
+            color: variable.$important-color;
+        }
+
+        .lose {
+            color: variable.$game-over-color;
+        }
+
+        h3 {
+            margin: 1rem 0;
+            font-size: 2rem;
+            text-align: center;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        margin-top: 1rem;
+
+        &__menu,
+        &__restart {
+            border-radius: 0.625rem;
+            background: none;
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        &__menu {
+            background-color: variable.$accent-color;
+        }
+
+        &__restart {
+            background-color: variable.$important-color;
+        }
+    }
+}
