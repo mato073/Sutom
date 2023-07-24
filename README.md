@@ -1,6 +1,6 @@
 # SUTOM - Word Guessing Game
 
-<!-- ![Project Logo](link-to-your-logo.png) <!-- If you have a logo, you can include it here --> -->
+![](screenshot/screenshot3.png)
 
 ## Table of Contents
 
@@ -45,7 +45,7 @@ The game should now be accessible at http://localhost:5173 in your web browser.
 5. After the game ends, you can choose to start a new game with the same settings or go back to the main menu.
 6. If you attempt to submit a word with fewer letters than the target word, a notification will be displayed.
 
-Features
+## Features
 - Choose the difficulty level and language of the word to guess.
 - Play the game with a set number of attempts to find the word.
 - Interactive virtual keyboard for easier guessing.
@@ -64,38 +64,6 @@ The custom hook useGameLoop is the core of the game and manages the game's logic
 
 
 ```js
-import React from 'react'
-import axios from 'axios'
-
-import { board } from '../types/board'
-import { letter } from '../types/letter'
-import { error } from '../types/error'
-import { playerWin } from '../types/playerWin'
-
-
-type StartGame = {
-    difficulty: number,
-    language: "en" | "es" | "it" | "de",
-    attempt: number
-}
-
-
-const useGameLoop = () => {
-
-    const [gameStarted, setGameStarted] = React.useState(false);
-    const [currentAttempt, setCurrentAttempt] = React.useState(1);
-    const [maxAttempt, setMaxAttempt] = React.useState(5);
-    const [currentWord, setCurrentWord] = React.useState('');
-    const [board, setBoard] = React.useState<board>([]);
-    const [playerWin, setPlayerWin] = React.useState<playerWin>("");
-    const [error, setError] = React.useState<error>("");
-    const [gameSettings, setGameSettings] = React.useState<StartGame>({
-        difficulty: 5,
-        language: "en",
-        attempt: 5,
-    });
-
-
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Backspace') {
             playerDel();
@@ -212,44 +180,6 @@ const useGameLoop = () => {
         setPlayerWin(() => "");
         setGameStarted(() => false);
     }
-
-
-    React.useEffect(() => {
-        if (gameStarted) {
-            window.addEventListener('keydown', handleKeyDown);
-            return () => {
-                window.removeEventListener('keydown', handleKeyDown);
-            }
-        }
-    }, [gameStarted, handleKeyDown]);
-
-    React.useEffect(() => {
-        if (currentAttempt > maxAttempt) {
-            setPlayerWin(() => "lose");
-        }
-    }, [currentAttempt, maxAttempt]);
-
-    React.useEffect(() => {
-        setError(() => "");
-    }, [error])
-
-    return {
-        gameStarted,
-        startGame,
-        board,
-        playerPlay,
-        playerDel,
-        setCurrentAttempt,
-        playerSubmit,
-        playerWin,
-        error,
-        wordLength: currentWord.length,
-        restartGame,
-        stopGame
-    }
-}
-
-export default useGameLoop
 ```
 
 ## Project Structure
