@@ -1,6 +1,8 @@
 # SUTOM - Word Guessing Game
 
-![](screenshot/screenshot3.png)
+<p align="center">
+  <img src="screenshot/screenshot3.png" alt="Screenshot 3">
+</p>
 
 ## Table of Contents
 
@@ -62,6 +64,8 @@ The game should now be accessible at http://localhost:5173 in your web browser.
 
 The custom hook useGameLoop is the core of the game and manages the game's logic.
 
+<details>
+<summary>Click to expand</summary>
 
 ```js
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -181,6 +185,7 @@ The custom hook useGameLoop is the core of the game and manages the game's logic
         setGameStarted(() => false);
     }
 ```
+</details>
 
 ## Project Structure
 
