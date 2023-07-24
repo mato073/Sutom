@@ -12,11 +12,7 @@
 4. [Features](#features)
 5. [Technologies Used](#technologies-used)
 6. [Code Examples](#code-examples)
-7. [Project Structure](#project-structure)
-8. [Contributing](#contributing)
-9. [Acknowledgments](#acknowledgments)
-10. [Screenshots/GIFs](#screenshots-gifs)
-11. [License](#license)
+10. [Screenshots](#screenshots)
 
 ## Description
 
@@ -62,7 +58,8 @@ The game should now be accessible at http://localhost:5173 in your web browser.
 
 ## Code Examples
 
-The custom hook useGameLoop is the core of the game and manages the game's logic.
+The custom hook useGameLoop is the core of the game and manages the game's logic. 
+The functions of the hook
 
 <details>
 <summary>Click to expand</summary>
@@ -159,7 +156,6 @@ The custom hook useGameLoop is the core of the game and manages the game's logic
         const { data } = await axios.get(url, {
             params: params
         });
-        console.log(data);
         setCurrentWord(() => data[0].toUpperCase());
         const wordLength = data[0].length;
         const newBoard: board = Array.from({ length: attempt }, () =>
@@ -186,29 +182,6 @@ The custom hook useGameLoop is the core of the game and manages the game's logic
     }
 ```
 </details>
-
-## Project Structure
-
-The project structure is organized as follows:
-
-SUTOM/
-|-- Game/
-|   |-- index.tsx
-|   |-- useGameLoop.tsx
-|-- Menu/
-|   |-- index.tsx
-|-- Keyboard/
-|   |-- index.tsx
-|-- Board/
-|   |-- index.tsx
-|-- ...
-
-
-- Game/: Contains the main game component and the custom hook useGameLoop for managing game logic.
-- Menu/: Contains the menu component for selecting game options.
-- Keyboard/: Contains the virtual keyboard component for user interaction.
-- Board/: Contains the board component for displaying the word typed by the user.
-
 
 ## Screenshots
 
