@@ -65,7 +65,7 @@ const Game = () => {
                 gameStarted ?
                     <>
                         <Board board={board} />
-                        <Keyboard playerPlay={(letter: string) => playerPlay(letter)} playerDel={playerDel} playerSubmit={playerSubmit} />
+                        <Keyboard playerPlay={playerPlay} playerDel={playerDel} playerSubmit={playerSubmit} />
                     </>
 
                     :

@@ -2,6 +2,7 @@ import React, { FormEvent, useCallback } from 'react';
 import './index.scss';
 
 import LanguagesDisplay from './components/languagesDisplay';
+import Attempt from './components/attempt';
 
 import { languageType } from '../../types/language';
 
@@ -84,15 +85,9 @@ const Menu = ({ startGame }: Props) => {
                     <h2>Attempt</h2>
                     <p>Choose the number of attempts you have to guess the word.</p>
                     <div className='form__attempt__selection'>
-                        <div onClick={() => setAttempts(5)} className={`form__attempt__selection__item ${attempts === 5 ? 'active' : ""}`}>
-                            <span>5</span>
-                        </div>
-                        <div onClick={() => setAttempts(6)} className={`form__attempt__selection__item ${attempts === 6 ? 'active' : ""}`}>
-                            <span>6</span>
-                        </div>
-                        <div onClick={() => setAttempts(7)} className={`form__attempt__selection__item ${attempts === 7 ? 'active' : ""}`}>
-                            <span>7</span>
-                        </div>
+                        <Attempt value={5} setAttempts={setAttempts} attempt={attempts} />
+                        <Attempt value={6} setAttempts={setAttempts} attempt={attempts} />
+                        <Attempt value={7} setAttempts={setAttempts} attempt={attempts} />
                     </div>
                 </div>
                 <div className='form__language'>

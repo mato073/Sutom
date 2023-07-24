@@ -18,7 +18,7 @@ const Modal = React.memo(({ isOpen, children }: ModalProps) => {
         <>
             {isOpen ?
                 <div className="modal">
-                    <div className="modal-content" onClick={e => { e.stopPropagation() }}>
+                    <div className="modal-content">
                         {children}
                     </div>
                 </div>
