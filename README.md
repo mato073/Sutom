@@ -275,7 +275,10 @@ SUTOM/
 - Board/: Contains the board component for displaying the word typed by the user.
 
 
-## Screenshots/GIFs
+## Screenshots
+
+![](screenshot/screenshot1.png)
+![](screenshot/screenshot2.png)
 
 
 
