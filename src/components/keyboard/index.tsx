@@ -34,7 +34,7 @@ const Keyboard = React.memo(({ playerDel, playerPlay, playerSubmit }: Props) => 
         <div className="keyboard">
             <div className="row1">
                 {keyborder.row1.map((item, index) => {
-                    return <KeyButton playerPlay={playerPlay} item={item} index={index} key={index} />
+                    return <KeyButton playerPlay={playerPlay} item={item}  key={index} />
                 }
                 )}
                 <div>
@@ -48,7 +48,7 @@ const Keyboard = React.memo(({ playerDel, playerPlay, playerSubmit }: Props) => 
             </div>
             <div className="row2">
                 {keyborder.row2.map((item, index) => {
-                    return <KeyButton playerPlay={playerPlay} item={item} index={index} key={index} />
+                    return <KeyButton playerPlay={playerPlay} item={item}  key={index} />
                 }
                 )}
                 <div onClick={playerSubmitCallBack} className="row2__validate">
@@ -57,7 +57,7 @@ const Keyboard = React.memo(({ playerDel, playerPlay, playerSubmit }: Props) => 
             </div>
             <div className="row3">
                 {keyborder.row3.map((item, index) => {
-                    return <KeyButton playerPlay={playerPlay} item={item} index={index} key={index} />
+                    return <KeyButton playerPlay={playerPlay} item={item} key={index} />
                 }
                 )}
             </div>

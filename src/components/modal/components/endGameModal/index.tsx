@@ -1,14 +1,17 @@
 import React from 'react';
 import './index.scss'
 
+import { PLAYER_WIN, playerWinType } from '../../../../types/playerWin';
+
 type endGameModal = {
-    win: "" | "win" | "lose",
+    win: playerWinType,
     restartGame: () => void,
-    stopGame: () => void
+    stopGame: () => void,
+    wordToGuess: string
 }
 
 
-const EndGameModal = React.memo(({ win, restartGame, stopGame }: endGameModal) => {
+const EndGameModal = React.memo(({ win, restartGame, stopGame, wordToGuess }: endGameModal) => {
 
     const restartGameCallback = React.useCallback(() => {
         restartGame();
@@ -19,7 +22,7 @@ const EndGameModal = React.memo(({ win, restartGame, stopGame }: endGameModal) =
         <div className='endGameModal'>
 
             {
-                win === "win" ?
+                win === PLAYER_WIN.WIN ?
                     <div className='endGameModal__content'>
                         <h3 className='modal-content-title win'>Congratulation !</h3>
                         <div className='modal-content-image-container' >
@@ -29,6 +32,7 @@ const EndGameModal = React.memo(({ win, restartGame, stopGame }: endGameModal) =
                     :
                     <div className='endGameModal__content'>
                         <h3 className='modal-content-title lose'>Game Over</h3>
+                        <h4 className='modal-content-subtitle'>The word to guess was: {wordToGuess}</h4>
                         <div className='modal-content-image-container' >
                             <img src='https://media4.giphy.com/media/0laTZoLJHVHTwiag6Q/giphy.gif?cid=ecf05e47n2ns4ufs2hpuhp25q1b3io7gd2gjg71lz95abnrl&rid=giphy.gif&ct=g'></img>
                         </div>

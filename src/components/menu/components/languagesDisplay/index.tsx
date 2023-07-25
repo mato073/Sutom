@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { languageType } from '../../../../types/language';
+import { languageType, languageNameType } from '../../../../types/language';
 
 interface Props2 {
     index: number;
     item: languageType;
-    setLanguage: (lang: "en" | "es" | "it" | "de") => void;
-    language: "en" | "es" | "it" | "de";
+    setLanguage: (lang: languageNameType) => void;
+    language: languageNameType;
 }
 
 const LanguagesDisplay = React.memo<Props2>(({ index, item, setLanguage, language }) => {

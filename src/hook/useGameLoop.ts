@@ -1,34 +1,51 @@
 import React from 'react'
-import axios from 'axios'
 
 import { board } from '../types/board'
-import { letter } from '../types/letter'
-import { error } from '../types/error'
-import { playerWin } from '../types/playerWin'
+import { letter, LETTER } from '../types/letter'
+import { errorType, ERROR } from '../types/error'
+import { playerWinType, PLAYER_WIN } from '../types/playerWin'
+import { languageNameType, LANGUAGES_NAME } from '../types/language'
+
+import { api } from '../utils/api'
 
 
-type StartGame = {
+type defaultGameSettingsType = {
     difficulty: number,
-    language: "en" | "es" | "it" | "de",
-    attempt: number
+    language: languageNameType,
+    attempt: number,
+    board: board,
+    playerWin: playerWinType,
+    currentAttempt: number,
+    currentWord: string,
+    maxAttempt: number,
 }
 
+const defaultGameSettings: defaultGameSettingsType = {
+    difficulty: 5,
+    language: LANGUAGES_NAME.EN,
+    attempt: 5,
+    board: [],
+    playerWin: PLAYER_WIN.DEFAULT,
+    currentAttempt: 1,
+    currentWord: "",
+    maxAttempt: 5,
+}
 
 const useGameLoop = () => {
 
-    const [gameStarted, setGameStarted] = React.useState(false);
-    const [currentAttempt, setCurrentAttempt] = React.useState(1);
-    const [maxAttempt, setMaxAttempt] = React.useState(5);
-    const [currentWord, setCurrentWord] = React.useState('');
-    const [board, setBoard] = React.useState<board>([]);
-    const [playerWin, setPlayerWin] = React.useState<playerWin>("");
-    const [error, setError] = React.useState<error>("");
-    const [gameSettings, setGameSettings] = React.useState<StartGame>({
-        difficulty: 5,
-        language: "en",
-        attempt: 5,
+    const [gameSettings, setGameSettings] = React.useState<defaultGameSettingsType>({
+        difficulty: defaultGameSettings.difficulty,
+        language: defaultGameSettings.language,
+        attempt: defaultGameSettings.attempt,
+        board: defaultGameSettings.board,
+        playerWin: defaultGameSettings.playerWin,
+        currentAttempt: defaultGameSettings.currentAttempt,
+        currentWord: defaultGameSettings.currentWord,
+        maxAttempt: defaultGameSettings.maxAttempt,
     });
 
+    const [error, setError] = React.useState<errorType>(ERROR.DEFAULT);
+    const [gameStarted, setGameStarted] = React.useState(false);
 
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Backspace') {
@@ -43,22 +60,25 @@ const useGameLoop = () => {
     }
 
     const playerPlay = (letter: string) => {
-        setBoard((prev: board) => {
-            const newBoard = [...prev];
-            const row = [...newBoard[currentAttempt - 1]];
+        setGameSettings((prev: defaultGameSettingsType) => {
+            const newBoard = [...prev.board];
+            const row = [...newBoard[prev.currentAttempt - 1]];
             const lastKeyPlayedIndex = row.findIndex((item: letter) => item.letter === '');
             if (lastKeyPlayedIndex !== -1) {
                 row[lastKeyPlayedIndex].letter = letter;
-                newBoard[currentAttempt - 1] = row;
+                newBoard[prev.currentAttempt - 1] = row;
             }
-            return newBoard;
+            return {
+                ...prev,
+                board: newBoard
+            }
         });
     }
 
     const playerDel = () => {
-        setBoard((prev: board) => {
-            const newBoard = [...prev]; // Create a new copy of the board
-            const currentRow = newBoard[currentAttempt - 1];
+        setGameSettings((prev: defaultGameSettingsType) => {
+            const newBoard = [...prev.board];
+            const currentRow = newBoard[prev.currentAttempt - 1];
             const lastKeyPlayedIndex = currentRow.findIndex((letter: letter) => letter.letter === '');
 
             if (lastKeyPlayedIndex !== 0) {
@@ -66,120 +86,124 @@ const useGameLoop = () => {
                     ? currentRow[currentRow.length - 1].letter = ''
                     : currentRow[lastKeyPlayedIndex - 1].letter = '';
 
-                newBoard[currentAttempt - 1] = currentRow; // Update the corresponding row
+                newBoard[gameSettings.currentAttempt - 1] = currentRow;
             }
-            return newBoard;
+            return {
+                ...prev,
+                board: newBoard
+            };
         });
     }
 
-    const playerSubmit = () => {
-        const word = board[currentAttempt - 1].map((letter: letter) => letter.letter).join('');
 
-        if (word.length < currentWord.length) {
-            setError(() => "not enouth letters");
+    const playerSubmit = () => {
+        const word = gameSettings.board[gameSettings.currentAttempt - 1].map((letter: letter) => letter.letter).join('');
+        if (word.length < gameSettings.currentWord.length) {
+            setError(() => ERROR.NOT_ENOUGH_LETTERS);
             return;
         }
-        if (word === currentWord) {
-            setPlayerWin(() => "win");
+        if (word === gameSettings.currentWord) {
+            setGameSettings((prev: defaultGameSettingsType) => ({
+                ...prev,
+                playerWin: PLAYER_WIN.WIN
+            }));
         }
         else {
-            const splittedWord = currentWord.split('');
-            const row = board[currentAttempt - 1].map((letter, index) => {
+            const splittedWord = gameSettings.currentWord.split('');
+            const row = gameSettings.board[gameSettings.currentAttempt - 1].map((letter, index) => {
                 const existedLetterIndex = splittedWord.findIndex((item) => item === letter.letter);
                 if (existedLetterIndex !== -1 && index === existedLetterIndex) {
                     splittedWord[existedLetterIndex] = '';
-                    letter.isCorrect = "correct";
+                    letter.isCorrect = LETTER.CORRECT;
                 }
                 else if (existedLetterIndex !== -1 && index !== existedLetterIndex) {
                     splittedWord[existedLetterIndex] = '';
-                    letter.isCorrect = "wrong place";
+                    letter.isCorrect = LETTER.WRONG_PLACE;
                 }
                 else {
-                    letter.isCorrect = "incorrect";
+                    letter.isCorrect = LETTER.INCORRECT;
                 }
                 return letter;
             })
-            setBoard((prev: board) => {
-                const newBoard = [...prev];
-                newBoard[currentAttempt - 1] = row;
-                return newBoard;
+            setGameSettings((prev: defaultGameSettingsType) => {
+                const newBoard = [...prev.board];
+                newBoard[prev.currentAttempt - 1] = row;
+                return {
+                    ...prev,
+                    board: newBoard,
+                    currentAttempt: prev.currentAttempt + 1
+                }
             })
-            setCurrentAttempt((prev: number) => prev + 1);
         }
     }
-
-
-
     const startGame = async (
         difficulty: number,
-        language: "en" | "es" | "it" | "de",
+        language: languageNameType,
         attempt: number) => {
 
-        const url = `https://random-word-api.herokuapp.com/word`;
-        const params: { "length": number, "lang"?: string } = { "length": difficulty };
-        if (language !== "en") params['lang'] = language;
-        const { data } = await axios.get(url, {
-            params: params
-        });
-        console.log(data);
-        setCurrentWord(() => data[0].toUpperCase());
-        const wordLength = data[0].length;
+        const data = await api(difficulty, language, attempt);
+        const wordLength = data.length;
         const newBoard: board = Array.from({ length: attempt }, () =>
-            Array.from({ length: wordLength }, () => ({ letter: '', isCorrect: "unset" }))
+            Array.from({ length: wordLength }, () => ({ letter: '', isCorrect: LETTER.UNSET }))
         );
-        setMaxAttempt(() => attempt);
-        setBoard(() => newBoard);
+        setGameSettings(() => ({
+            difficulty,
+            language,
+            attempt,
+            board: newBoard,
+            playerWin: PLAYER_WIN.DEFAULT,
+            currentAttempt: 1,
+            currentWord: data.toUpperCase(),
+            maxAttempt: attempt,
+        }));
         setGameStarted(() => true);
-        setGameSettings(() => ({ difficulty, language, attempt }));
     }
 
     const restartGame = () => {
-        setCurrentAttempt(() => 1);
-        setBoard(() => []);
-        setPlayerWin(() => "");
         startGame(gameSettings.difficulty, gameSettings.language, gameSettings.attempt);
     }
 
     const stopGame = () => {
-        setCurrentAttempt(() => 1);
-        setBoard(() => []);
-        setPlayerWin(() => "");
         setGameStarted(() => false);
     }
 
 
     React.useEffect(() => {
-        if (gameStarted) {
+        if (gameStarted && gameSettings.currentAttempt <= gameSettings.maxAttempt) {
             window.addEventListener('keydown', handleKeyDown);
             return () => {
                 window.removeEventListener('keydown', handleKeyDown);
             }
         }
-    }, [gameStarted, handleKeyDown]);
+    }, [gameStarted, handleKeyDown, gameSettings.currentAttempt]);
 
     React.useEffect(() => {
-        if (currentAttempt > maxAttempt) {
-            setPlayerWin(() => "lose");
+        if (gameSettings.currentAttempt > gameSettings.maxAttempt) {
+            setGameSettings((prev: defaultGameSettingsType) => ({
+                ...prev,
+                playerWin: PLAYER_WIN.LOSE
+            }));
         }
-    }, [currentAttempt, maxAttempt]);
+    }, [gameSettings.currentAttempt, gameSettings.maxAttempt]);
 
     React.useEffect(() => {
-        setError(() => "");
+        setError(() => ERROR.DEFAULT);
     }, [error])
 
     return {
         gameStarted,
         startGame,
-        board,
+        board: gameSettings.board,
         playerPlay,
         playerDel,
-        setCurrentAttempt,
+        setCurrentAttempt: setGameSettings,
         playerSubmit,
-        playerWin,
+        playerWin: gameSettings.playerWin,
         error,
-        wordLength: currentWord.length,
+        wordLength: gameSettings.currentWord.length,
         restartGame,
-        stopGame
+        stopGame,
+        wordToGuess: gameSettings.currentWord,
     }
 }
 

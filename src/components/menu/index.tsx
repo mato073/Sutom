@@ -4,7 +4,7 @@ import './index.scss';
 import LanguagesDisplay from './components/languagesDisplay';
 import Attempt from './components/attempt';
 
-import { languageType } from '../../types/language';
+import { languageType, LANGUAGES_NAME, languageNameType } from '../../types/language';
 
 
 import germanyFlag from '../assets/icon/flags/germany.png';
@@ -16,39 +16,37 @@ import englishFlag from '../assets/icon/flags/united-kingdom.png';
 const languages: languageType[] = [
     {
         "name": "English",
-        "key": "en",
+        "key": LANGUAGES_NAME.EN,
         "flag": englishFlag
     },
     {
         "name": "Spanish",
-        "key": "es",
+        "key": LANGUAGES_NAME.ES,
         "flag": spainFlag
     },
     {
         "name": "Italian",
-        "key": "it",
+        "key": LANGUAGES_NAME.IT,
         "flag": italyFlag
     },
     {
         "name": "German",
-        "key": "de",
+        "key": LANGUAGES_NAME.DE,
         "flag": germanyFlag
     },
 ]
 
-type languageTypeString = "en" | "es" | "it" | "de";
-
 interface Props {
-    startGame: (difficulty: number, language: "en" | "es" | "it" | "de", attempts: number) => void;
+    startGame: (difficulty: number, language: languageNameType, attempts: number) => void;
 }
 
 const Menu = ({ startGame }: Props) => {
 
     const [difficulty, setDifficulty] = React.useState<number>(4);
     const [attempts, setAttempts] = React.useState<number>(5);
-    const [language, setLanguage] = React.useState<languageTypeString>("en");
+    const [language, setLanguage] = React.useState<languageNameType>(LANGUAGES_NAME.EN);
 
-    const startGameCallback = useCallback((difficulty: number, language: "en" | "es" | "it" | "de", attempts: number) => {
+    const startGameCallback = useCallback((difficulty: number, language: languageNameType, attempts: number) => {
         startGame(difficulty, language, attempts);
     }, [startGame])
 
@@ -62,10 +60,11 @@ const Menu = ({ startGame }: Props) => {
         <section>
             <div className='menu__rules'>
                 <h2>How to Sutom</h2>
-                <p>Guess the word by typing it in using your keyboard or the virtual one</p>
-                <p>If your guess a letter corectly but not in the right place, it will be displayed in yellow. <span className='yellow'>L</span></p>
-                <p>If your guess a letter corectly and in the right place, it will be displayed in green.<span className='green'>L</span></p>
-                <p>If your guess a letter wrong, it will be displayed in red.<span className='red'>L</span></p>
+                <p>Attempt to guess the word by typing it using either your physical keyboard or the virtual onee provided.</p>
+                <p>After entering your guess, click "ENTER" on your keyboard or<span className='green'>Validate</span></p>
+                <p>Correctly guessed letters that are in the word but in the wrong position will be shown in yellow. <span className='yellow'>L</span></p>
+                <p>Correctly guessed letters in the right position will be displayed in green.<span className='green'>L</span></p>
+                <p>Incorrectly guessed letters will be shown in red.<span className='red'>L</span></p>
                 <p>You have a limited number of attempts to guess the word.</p>
             </div>
             <form className='form' onSubmit={startGameWithOption}>
@@ -92,7 +91,7 @@ const Menu = ({ startGame }: Props) => {
                 </div>
                 <div className='form__language'>
                     <h2>Languge</h2>
-                    <p>Choose the language of the words.</p>
+                    <p>Choose the language of the word.</p>
                     <div className='form__language__container'>
                         {
                             languages.map((item, index) => {

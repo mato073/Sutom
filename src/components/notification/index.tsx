@@ -11,7 +11,6 @@ const Notification = () => {
 
     React.useEffect(() => {
         window.addEventListener('notification', ((event: CustomEvent) => {
-            console.log(event.detail);
             setNotification(event.detail);
         }) as EventListener);
 

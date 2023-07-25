@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 
 import { board } from '../../types/board'
-import { letter } from '../../types/letter'
+import { letter, LETTER } from '../../types/letter'
 
 
 
@@ -18,12 +18,14 @@ type Colors = {
 
 
 const colors: Colors = {
-    "unset": '',
-    "correct": 'green',
-    "wrong place": 'yellow',
-    "incorrect": 'red',
+    [LETTER.UNSET]: '',
+    [LETTER.CORRECT]: 'green',
+    [LETTER.WRONG_PLACE]: 'yellow',
+    [LETTER.INCORRECT]: 'red',
 
 }
+
+
 
 
 const Board = memo<Props>(({ board }) => {
@@ -35,7 +37,7 @@ const Board = memo<Props>(({ board }) => {
     }, [board]);
 
 
-    return <div>
+    return <div className='board'>
         {
             boardState.map((row, index) => {
                 return <div key={index} className="attempts">

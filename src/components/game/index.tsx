@@ -1,13 +1,15 @@
 import React from 'react';
 
 import useGameLoop from '../../hook/useGameLoop';
-import Board from '../board';
-import Keyboard from '../keyboard';
+
+import Arena from '../arena';
 import Menu from '../menu';
 import Notification from '../notification';
 import Modal from '../modal';
 import EndGameModal from '../modal/components/endGameModal';
-import Arrow from "../assets/arrow";
+
+import { PLAYER_WIN } from '../../types/playerWin';
+import { ERROR } from '../../types/error';
 
 import { notificationAction } from '../../utils/notificationAction';
 
@@ -27,7 +29,8 @@ const Game = () => {
         error,
         wordLength,
         restartGame,
-        stopGame
+        stopGame,
+        wordToGuess
     } = useGameLoop();
 
 
@@ -43,14 +46,14 @@ const Game = () => {
 
 
     React.useEffect(() => {
-        if (playerWin === 'win' || playerWin === 'lose') {
+        if (playerWin === PLAYER_WIN.WIN || playerWin === PLAYER_WIN.LOSE) {
             setModal(true);
         }
     }, [playerWin])
 
 
     React.useEffect(() => {
-        if (error === "not enouth letters") {
+        if (error === ERROR.NOT_ENOUGH_LETTERS) {
             notificationAction(`You need to play ${wordLength} letters`, 'warning');
         }
     }, [error])
@@ -58,16 +61,12 @@ const Game = () => {
     return (
         <div className='game'>
             <Modal isOpen={modal}>
-                <EndGameModal stopGame={stopGameCallback} restartGame={restartGameCallback} win={playerWin} />
+                <EndGameModal  stopGame={stopGameCallback} restartGame={restartGameCallback} win={playerWin} wordToGuess={wordToGuess} />
             </Modal>
             <Notification />
             {
                 gameStarted ?
-                    <>
-                        <Board board={board} />
-                        <Keyboard playerPlay={playerPlay} playerDel={playerDel} playerSubmit={playerSubmit} />
-                    </>
-
+                    <Arena board={board} playerPlay={playerPlay} playerDel={playerDel} playerSubmit={playerSubmit} />
                     :
                     <Menu startGame={startGame} />
             }
