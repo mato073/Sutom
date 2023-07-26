@@ -188,7 +188,7 @@ The functions of the hook
 ```
 </details>
 
-## Project hierachy
+## Project Hierachy
 
 ```bash
 ├── App.tsx
