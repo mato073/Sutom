@@ -12,7 +12,7 @@
 4. [Features](#features)
 5. [Technologies Used](#technologies-used)
 6. [Code Examples](#code-examples)
-7. [Project Hierachy](#Project-hierachy)
+7. [Project Hierachy](#project-hierachy)
 8. [Screenshots](#screenshots)
 
 ## Description
